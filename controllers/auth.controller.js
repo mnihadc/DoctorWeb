@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User.model");
+const jwt = require("jsonwebtoken");
 const saltRounds = 10;
 
 const getLogin = (req, res, next) => {
@@ -85,9 +86,32 @@ const Login = async (req, res, next) => {
         errorMessage: "Incorrect password.",
       });
     }
+
+    // Set session data
+    req.session.user = {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    };
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+
+    // Set JWT in a cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600000,
+    });
+
     res.redirect("/");
   } catch (error) {
     next(error);
   }
 };
+
 module.exports = { getLogin, Signup, Login };
