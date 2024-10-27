@@ -63,8 +63,9 @@ const Signup = async (req, res, next) => {
 const Login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const adminEmail = process.env.ADMIN_KEY;
 
+    const user = await User.findOne({ email });
     if (!user) {
       return res.render("partials/Login", {
         title: "Login",
@@ -84,26 +85,37 @@ const Login = async (req, res, next) => {
       });
     }
 
-    // Set session data
+    // Set session data and isAdmin flag
     req.session.user = {
       id: user._id,
       username: user.username,
       email: user.email,
+      isAdmin: email === adminEmail,
     };
 
-    // Generate and set JWT in a cookie
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id, email: user.email, isAdmin: email === adminEmail },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1h" }
     );
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 3600000,
     });
 
-    res.redirect("/");
+    if (email === adminEmail) {
+      return res.render("partials/Home", {
+        title: "Home",
+        layout: "Layout/main",
+        isHomePage: true,
+        isAuthenticated: !!req.session.user,
+        isAdmin: true,
+      });
+    } else {
+      return res.redirect("/");
+    }
   } catch (error) {
     next(error);
   }

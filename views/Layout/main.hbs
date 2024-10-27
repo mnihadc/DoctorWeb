@@ -20,7 +20,11 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <img src="/images/istockphoto-1156179518-612x612.jpg" alt="DoctorWeb Logo"
             style="height: 40px;margin-left:4rem ;">
+        {{#if isAdmin}}
+        <a class="navbar-brand" href="/">DoctorWeb Admin Panel</a>
+        {{else}}
         <a class="navbar-brand" href="/">DoctorWeb</a>
+        {{/if}}
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
