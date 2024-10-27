@@ -187,3 +187,8 @@ form .btn input[type="submit"] {
   font-weight: 500;
   cursor: pointer;
 }
+.error-message {
+  color: red;
+  margin: 10px 0;
+  font-weight: bold;
+}

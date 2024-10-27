@@ -1,4 +1,9 @@
 <div class="wrapper">
+    <!-- Error Message for Signup -->
+    {{#if errorMessage}}
+    <div class="error-message">{{errorMessage}}</div>
+    {{/if}}
+
     <div class="title-text">
         <div class="title login">Login Form</div>
         <div class="title signup">Signup Form</div>
@@ -30,6 +35,9 @@
 
             <!-- Signup Form -->
             <form action="/auth/signup" method="POST" class="signup">
+                <div class="field">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
                 <div class="field">
                     <input type="text" name="email" placeholder="Email Address" required>
                 </div>
@@ -68,5 +76,14 @@
     signupLink.onclick = (() => {
         signupBtn.click();
         return false;
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const errorMessage = document.querySelector('.error-message');
+        if (errorMessage) {
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
     });
 </script>
