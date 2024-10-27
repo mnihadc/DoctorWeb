@@ -10,6 +10,9 @@
     {{#if isHomePage}}
     <link rel="stylesheet" href="/user-css/home.css">
     {{/if}}
+    {{#if isLoginPage}}
+    <link rel="stylesheet" href="/user-css/login.css">
+    {{/if}}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
@@ -34,7 +37,7 @@
                     <a class="nav-link" href="/about">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Login</a>
+                    <a class="nav-link" href="/auth/login">Login</a>
                 </li>
             </ul>
         </div>
