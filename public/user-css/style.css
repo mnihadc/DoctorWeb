@@ -11,7 +11,7 @@
   font-weight: bold;
   color: #007bff;
   margin-left: 1rem;
-  font-size: 2rem !important; /* Keep or adjust this as needed */
+  font-size: 2rem !important; 
 }
 
 .navbar-brand:hover {
