@@ -63,4 +63,31 @@ const Signup = async (req, res, next) => {
   }
 };
 
-module.exports = { getLogin, Signup };
+const Login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.render("partials/Login", {
+        title: "Login",
+        layout: "Layout/main",
+        isLoginPage: true,
+        errorMessage: "User with this email does not exist.",
+      });
+    }
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.render("partials/Login", {
+        title: "Login",
+        layout: "Layout/main",
+        isLoginPage: true,
+        errorMessage: "Incorrect password.",
+      });
+    }
+    res.redirect("/");
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { getLogin, Signup, Login };
