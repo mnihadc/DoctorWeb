@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
-const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
+const User = require("../models/User.model");
 const saltRounds = 10;
 
 const getLogin = (req, res, next) => {
@@ -32,7 +32,6 @@ const Signup = async (req, res, next) => {
         errorMessage: "Password must be at least 8 characters long.",
       });
     }
-
     if (confirmPassword !== password) {
       return res.render("partials/Login", {
         title: "Signup",
@@ -41,6 +40,7 @@ const Signup = async (req, res, next) => {
         errorMessage: "Passwords do not match.",
       });
     }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.render("partials/Login", {
@@ -52,11 +52,7 @@ const Signup = async (req, res, next) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = new User({
-      username,
-      email,
-      password: hashedPassword,
-    });
+    const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
     res.redirect("/auth/login");
   } catch (error) {
@@ -67,8 +63,8 @@ const Signup = async (req, res, next) => {
 const Login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.render("partials/Login", {
         title: "Login",
@@ -77,6 +73,7 @@ const Login = async (req, res, next) => {
         errorMessage: "User with this email does not exist.",
       });
     }
+
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
       return res.render("partials/Login", {
@@ -94,14 +91,12 @@ const Login = async (req, res, next) => {
       email: user.email,
     };
 
-    // Generate JWT
+    // Generate and set JWT in a cookie
     const token = jwt.sign(
       { id: user._id, email: user.email },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1h" }
     );
-
-    // Set JWT in a cookie
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -114,4 +109,13 @@ const Login = async (req, res, next) => {
   }
 };
 
-module.exports = { getLogin, Signup, Login };
+const Logout = (req, res, next) => {
+  req.session.destroy((err) => {
+    if (err) return next(err);
+    res.clearCookie("connect.sid");
+    res.clearCookie("token");
+    res.redirect("/auth/login");
+  });
+};
+
+module.exports = { getLogin, Signup, Login, Logout };

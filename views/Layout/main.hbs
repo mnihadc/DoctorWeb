@@ -36,9 +36,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/about">About</a>
                 </li>
+                {{#if isAuthenticated}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/auth/logout">Logout</a>
+                </li>
+                {{else}}
                 <li class="nav-item">
                     <a class="nav-link" href="/auth/login">Login</a>
                 </li>
+                {{/if}}
             </ul>
         </div>
     </nav>

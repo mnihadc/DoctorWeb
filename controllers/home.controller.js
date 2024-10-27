@@ -3,6 +3,7 @@ const getHome = (req, res, next) => {
     title: "Home",
     layout: "Layout/main",
     isHomePage: true,
+    isAuthenticated: !!req.session.user,
   });
 };
 
