@@ -1,0 +1,100 @@
+body {
+  background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.search-container input[type="text"] {
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.search-container button {
+  padding: 5px;
+  background-color: #0073e6;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  color: white;
+}
+
+th {
+  background-color: #0059b3;
+  color: white;
+}
+
+button.edit,
+button.delete {
+  background-color: #0059b3;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #003366;
+  padding: 30px;
+  border-radius: 10px;
+  z-index: 1000;
+  width: 400px;
+  height: 300px;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+input[type="text"],
+input[type="email"] {
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  width: calc(100% - 32px);
+  color: #708090;
+}

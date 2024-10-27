@@ -85,7 +85,6 @@ const Login = async (req, res, next) => {
       });
     }
 
-    // Set session data and isAdmin flag
     req.session.user = {
       id: user._id,
       username: user.username,

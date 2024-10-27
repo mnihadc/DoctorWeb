@@ -1,0 +1,106 @@
+<div class="container">
+    <div class="search-container">
+        <input type="text" placeholder="Search users...">
+        <button onclick="togglePopup()">Create User</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+            <tr>
+                <td>1</td>
+                <td>john_doe</td>
+                <td>john@example.com</td>
+                <td><button class="edit" onclick="openEditPopup(1, 'john_doe', 'john@example.com')">Edit</button></td>
+                <td><button class="delete" onclick="deleteUser(1)">Delete</button></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>jane_doe</td>
+                <td>jane@example.com</td>
+                <td><button class="edit" onclick="openEditPopup(2, 'jane_doe', 'jane@example.com')">Edit</button></td>
+                <td><button class="delete" onclick="deleteUser(2)">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="popup" id="popup">
+    <h2 id="popupTitle">Create User</h2>
+    <input type="text" id="usernameInput" placeholder="Username"><br>
+    <input type="email" id="emailInput" placeholder="Email"><br>
+    <button onclick="addOrUpdateUser()">Add User</button>
+    <button onclick="togglePopup()">Cancel</button>
+</div>
+
+<script>
+    let editingUserId = null;
+
+    function togglePopup() {
+        const popup = document.getElementById("popup");
+        const overlay = document.getElementById("overlay");
+        if (popup.style.display === "block") {
+            popup.style.display = "none";
+            overlay.style.display = "none";
+            resetPopup();
+        } else {
+            popup.style.display = "block";
+            overlay.style.display = "block";
+        }
+    }
+
+    function resetPopup() {
+        document.getElementById("usernameInput").value = '';
+        document.getElementById("emailInput").value = '';
+        document.getElementById("popupTitle").textContent = "Create User";
+        editingUserId = null;
+    }
+
+    function openEditPopup(id, username, email) {
+        document.getElementById("usernameInput").value = username;
+        document.getElementById("emailInput").value = email;
+        document.getElementById("popupTitle").textContent = "Update User";
+        editingUserId = id;
+        togglePopup();
+    }
+
+    function addOrUpdateUser() {
+        const username = document.getElementById("usernameInput").value;
+        const email = document.getElementById("emailInput").value;
+
+        if (editingUserId) {
+            const row = document.querySelector(`#userTableBody tr:nth-child(${editingUserId})`);
+            row.cells[1].textContent = username;
+            row.cells[2].textContent = email;
+            alert("User updated! (Dummy action)");
+        } else {
+            const newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${document.querySelectorAll('#userTableBody tr').length + 1}</td>
+                <td>${username}</td>
+                <td>${email}</td>
+                <td><button class="edit" onclick="openEditPopup(${document.querySelectorAll('#userTableBody tr').length + 1}, '${username}', '${email}')">Edit</button></td>
+                <td><button class="delete" onclick="deleteUser(${document.querySelectorAll('#userTableBody tr').length + 1})">Delete</button></td>
+            `;
+            document.getElementById("userTableBody").appendChild(newRow);
+            alert("User added! (Dummy action)");
+        }
+
+        togglePopup();
+    }
+
+    function deleteUser(id) {
+        const row = document.querySelector(`#userTableBody tr:nth-child(${id})`);
+        row.remove();
+        alert("User deleted! (Dummy action)");
+    }
+</script>
