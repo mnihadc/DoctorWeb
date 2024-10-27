@@ -3,7 +3,9 @@ const dotenv = require("dotenv");
 const path = require("path");
 const hbs = require("hbs");
 const mongoose = require("mongoose");
+
 const homeRoutes = require("./routes/home.route");
+const authRoutes = require("./routes/auth.route");
 
 dotenv.config();
 const app = express();
@@ -32,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public/user-css")));
 
 // Use routes
 app.use("/", homeRoutes);
+app.use("/auth", authRoutes);
 
 // Start the server
 app.listen(port, () => {
