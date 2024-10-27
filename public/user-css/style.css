@@ -1,0 +1,39 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  color: #007bff;
+  margin-left: 1rem;
+  font-size: 2rem !important; /* Keep or adjust this as needed */
+}
+
+.navbar-brand:hover {
+  color: #0056b3;
+}
+
+.nav-link {
+  color: #333;
+  font-weight: 700;
+  transition: color 0.3s;
+  font-size: 1.2rem;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+.navbar-text {
+  color: #555;
+  font-style: italic;
+}
+
+.navbar-item {
+  font-size: 1rem !important;
+}
