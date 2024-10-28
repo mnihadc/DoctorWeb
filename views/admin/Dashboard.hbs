@@ -1,6 +1,6 @@
 <div class="container">
     <div class="search-container">
-        <input type="text" placeholder="Search users...">
+        <input type="text" placeholder="Search users..." oninput="filterUsers()" id="searchInput">
         <button onclick="togglePopup()" style="color: aliceblue;">Create User</button>
     </div>
 
@@ -16,7 +16,7 @@
         </thead>
         <tbody id="userTableBody">
             {{#each users}}
-            <tr id="user-{{this._id}}">
+            <tr id="user-{{this._id}}" data-username="{{this.username}}" data-email="{{this.email}}">
                 <td>{{this._id}}</td>
                 <td>{{this.username}}</td>
                 <td>{{this.email}}</td>
@@ -41,6 +41,21 @@
 </div>
 
 <script>
+    function filterUsers() {
+        const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+        const rows = document.querySelectorAll("#userTableBody tr");
+
+        rows.forEach(row => {
+            const username = row.getAttribute("data-username").toLowerCase();
+            const email = row.getAttribute("data-email").toLowerCase();
+            if (username.includes(searchTerm) || email.includes(searchTerm)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
     let editingUserId = null;
 
     function togglePopup() {
@@ -74,7 +89,7 @@
     async function addOrUpdateUser() {
         const username = document.getElementById("usernameInput").value;
         const email = document.getElementById("emailInput").value;
-        const password = document.getElementById("passwordInput").value; // Capture password input
+        const password = document.getElementById("passwordInput").value;
 
         if (editingUserId) {
             const response = await fetch(`/admin/update-user/${editingUserId}`, {
@@ -109,12 +124,14 @@
                 if (newUser._id && newUser.username && newUser.email) {
                     const newRow = document.createElement("tr");
                     newRow.id = `user-${newUser._id}`;
+                    newRow.setAttribute("data-username", newUser.username);
+                    newRow.setAttribute("data-email", newUser.email);
                     newRow.innerHTML = `
-            <td>${newUser._id}</td>
-            <td class="username">${newUser.username}</td>
-            <td class="email">${newUser.email}</td>
-            <td><button class="edit" onclick="openEditPopup('${newUser._id}', '${newUser.username}', '${newUser.email}')">Edit</button></td>
-            <td><button class="delete" onclick="deleteUser('${newUser._id}')">Delete</button></td>`;
+                        <td>${newUser._id}</td>
+                        <td>${newUser.username}</td>
+                        <td>${newUser.email}</td>
+                        <td><button class="edit" onclick="openEditPopup('${newUser._id}', '${newUser.username}', '${newUser.email}')">Edit</button></td>
+                        <td><button class="delete" onclick="deleteUser('${newUser._id}')">Delete</button></td>`;
                     document.getElementById("userTableBody").appendChild(newRow);
                     alert("User added!");
                 } else {
@@ -127,7 +144,6 @@
         }
         togglePopup();
     }
-
 
     async function deleteUser(id) {
         await fetch(`/admin/delete-user/${id}`, {
