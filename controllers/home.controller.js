@@ -7,5 +7,13 @@ const getHome = (req, res, next) => {
     isAuthenticated: !!req.session.user,
   });
 };
-
-module.exports = { getHome };
+const getDoctor = (req, res, next) => {
+  res.render("partials/Doctor", {
+    title: "Doctor",
+    layout: "Layout/main",
+    isDoctorPage: true,
+    isAdmin: req.session.user?.isAdmin,
+    isAuthenticated: !!req.session.user,
+  });
+};
+module.exports = { getHome, getDoctor };
