@@ -75,19 +75,25 @@
         const email = document.getElementById("emailInput").value;
 
         if (editingUserId) {
-            // Send update request to server
-            await fetch(`/users/${editingUserId}`, {
+            const response = await fetch(`/admin/update-user/${editingUserId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ username, email })
             });
-            document.querySelector(`#user-${editingUserId} .username`).textContent = username;
-            document.querySelector(`#user-${editingUserId} .email`).textContent = email;
-            alert("User updated!");
+
+            if (response.ok) {
+                const updatedUser = await response.json();
+                // Update the user row with new data
+                document.querySelector(`#user-${editingUserId} td:nth-child(2)`).textContent = updatedUser.username; // Update username
+                document.querySelector(`#user-${editingUserId} td:nth-child(3)`).textContent = updatedUser.email; // Update email
+                alert("User updated!"); // Show success alert
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to update user: ${errorData.message || "Unknown error"}`); // Show failure alert
+            }
         } else {
-            // Send create request to server
             const response = await fetch(`/users`, {
                 method: 'POST',
                 headers: {
@@ -95,22 +101,29 @@
                 },
                 body: JSON.stringify({ username, email })
             });
-            const newUser = await response.json();
-            const newRow = document.createElement("tr");
-            newRow.id = `user-${newUser._id}`;
-            newRow.innerHTML = `
+
+            if (response.ok) {
+                const newUser = await response.json();
+                const newRow = document.createElement("tr");
+                newRow.id = `user-${newUser._id}`;
+                newRow.innerHTML = `
                 <td>${newUser._id}</td>
                 <td class="username">${newUser.username}</td>
                 <td class="email">${newUser.email}</td>
                 <td><button class="edit" onclick="openEditPopup('${newUser._id}', '${newUser.username}', '${newUser.email}')">Edit</button></td>
                 <td><button class="delete" onclick="deleteUser('${newUser._id}')">Delete</button></td>
             `;
-            document.getElementById("userTableBody").appendChild(newRow);
-            alert("User added!");
+                document.getElementById("userTableBody").appendChild(newRow);
+                alert("User added!");
+            } else {
+                const errorData = await response.json();
+                alert(`Failed to add user: ${errorData.message || "Unknown error"}`);
+            }
         }
 
         togglePopup();
     }
+
 
     async function deleteUser(id) {
         // Send delete request to server
