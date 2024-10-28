@@ -35,6 +35,7 @@
     <h2 id="popupTitle" style="color: aliceblue;">Create User</h2>
     <input type="text" id="usernameInput" placeholder="Username"><br>
     <input type="email" id="emailInput" placeholder="Email"><br>
+    <input type="password" id="passwordInput" placeholder="Password"><br>
     <button onclick="addOrUpdateUser()">Save</button>
     <button onclick="togglePopup()">Cancel</button>
 </div>
@@ -73,6 +74,7 @@
     async function addOrUpdateUser() {
         const username = document.getElementById("usernameInput").value;
         const email = document.getElementById("emailInput").value;
+        const password = document.getElementById("passwordInput").value; // Capture password input
 
         if (editingUserId) {
             const response = await fetch(`/admin/update-user/${editingUserId}`, {
@@ -93,33 +95,36 @@
                 alert(`Failed to update user: ${errorData.message || "Unknown error"}`);
             }
         } else {
-            const response = await fetch(`/users`, {
+            const response = await fetch(`/admin/create-user`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ username, email })
+                body: JSON.stringify({ username, email, password })
             });
 
             if (response.ok) {
                 const newUser = await response.json();
-                const newRow = document.createElement("tr");
-                newRow.id = `user-${newUser._id}`;
-                newRow.innerHTML = `
-                <td>${newUser._id}</td>
-                <td class="username">${newUser.username}</td>
-                <td class="email">${newUser.email}</td>
-                <td><button class="edit" onclick="openEditPopup('${newUser._id}', '${newUser.username}', '${newUser.email}')">Edit</button></td>
-                <td><button class="delete" onclick="deleteUser('${newUser._id}')">Delete</button></td>
-            `;
-                document.getElementById("userTableBody").appendChild(newRow);
-                alert("User added!");
+
+                if (newUser._id && newUser.username && newUser.email) {
+                    const newRow = document.createElement("tr");
+                    newRow.id = `user-${newUser._id}`;
+                    newRow.innerHTML = `
+            <td>${newUser._id}</td>
+            <td class="username">${newUser.username}</td>
+            <td class="email">${newUser.email}</td>
+            <td><button class="edit" onclick="openEditPopup('${newUser._id}', '${newUser.username}', '${newUser.email}')">Edit</button></td>
+            <td><button class="delete" onclick="deleteUser('${newUser._id}')">Delete</button></td>`;
+                    document.getElementById("userTableBody").appendChild(newRow);
+                    alert("User added!");
+                } else {
+                    alert("Error: Missing user data in response.");
+                }
             } else {
                 const errorData = await response.json();
                 alert(`Failed to add user: ${errorData.message || "Unknown error"}`);
             }
         }
-
         togglePopup();
     }
 

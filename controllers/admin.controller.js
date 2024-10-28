@@ -1,4 +1,5 @@
 const User = require("../models/User.model");
+const bcrypt = require("bcrypt");
 
 const dashboard = async (req, res, next) => {
   const users = await User.find({});
@@ -42,4 +43,16 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { dashboard, updateUser, deleteUser };
+const createUser = async (req, res, next) => {
+  try {
+    const { username, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword });
+    const savedUser = await newUser.save();
+    res.status(200).json(savedUser);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { dashboard, updateUser, deleteUser, createUser };

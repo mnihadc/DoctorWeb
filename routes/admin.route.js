@@ -3,6 +3,7 @@ const {
   dashboard,
   updateUser,
   deleteUser,
+  createUser,
 } = require("../controllers/admin.controller");
 const verifyToken = require("../middleware/verifyToken");
 const route = express.Router();
@@ -10,5 +11,6 @@ const route = express.Router();
 route.get("/dashboard", verifyToken, dashboard);
 route.put("/update-user/:id", verifyToken, updateUser);
 route.delete("/delete-user/:id", verifyToken, deleteUser);
+route.post("/create-user", verifyToken, createUser);
 
 module.exports = route;
