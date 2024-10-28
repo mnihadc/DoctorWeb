@@ -25,8 +25,6 @@ const updateUser = async (req, res) => {
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found." });
     }
-
-    // Send back the updated user data as JSON
     res.status(200).json(updatedUser);
   } catch (error) {
     console.error("Error updating user:", error);
@@ -34,4 +32,14 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { dashboard, updateUser };
+const deleteUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    await User.findByIdAndDelete(id);
+    res.status(204).json({ message: "User deleted successfully." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { dashboard, updateUser, deleteUser };

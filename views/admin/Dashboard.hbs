@@ -85,13 +85,12 @@
 
             if (response.ok) {
                 const updatedUser = await response.json();
-                // Update the user row with new data
-                document.querySelector(`#user-${editingUserId} td:nth-child(2)`).textContent = updatedUser.username; // Update username
-                document.querySelector(`#user-${editingUserId} td:nth-child(3)`).textContent = updatedUser.email; // Update email
-                alert("User updated!"); // Show success alert
+                document.querySelector(`#user-${editingUserId} td:nth-child(2)`).textContent = updatedUser.username;
+                document.querySelector(`#user-${editingUserId} td:nth-child(3)`).textContent = updatedUser.email;
+                alert("User updated!");
             } else {
                 const errorData = await response.json();
-                alert(`Failed to update user: ${errorData.message || "Unknown error"}`); // Show failure alert
+                alert(`Failed to update user: ${errorData.message || "Unknown error"}`);
             }
         } else {
             const response = await fetch(`/users`, {
@@ -126,8 +125,7 @@
 
 
     async function deleteUser(id) {
-        // Send delete request to server
-        await fetch(`/users/${id}`, {
+        await fetch(`/admin/delete-user/${id}`, {
             method: 'DELETE'
         });
         const row = document.getElementById(`user-${id}`);
