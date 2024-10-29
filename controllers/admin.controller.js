@@ -1,5 +1,5 @@
 const User = require("../models/User.model");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const dashboard = async (req, res, next) => {
   const users = await User.find({});
