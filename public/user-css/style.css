@@ -11,7 +11,7 @@
   font-weight: bold;
   color: #007bff;
   margin-left: 1rem;
-  font-size: 2rem !important; 
+  font-size: 2rem !important;
 }
 
 .navbar-brand:hover {
@@ -36,4 +36,61 @@
 
 .navbar-item {
   font-size: 1rem !important;
+}
+.footer {
+  background: #003366;
+  color: #ffffff;
+  padding: 20px 0;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 20px;
+}
+
+.footer-logo img {
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li {
+  margin: 5px 0;
+}
+
+.footer-links ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links ul li a:hover {
+  color: #cccccc;
+}
+
+.footer-social a {
+  color: #ffffff;
+  margin: 0 5px;
+  text-decoration: none;
+  font-size: 20px;
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: #cccccc;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 10px;
+  font-size: 14px;
+  background: #002244;
 }

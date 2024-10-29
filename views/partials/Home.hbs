@@ -2,3 +2,103 @@
     <button class="ok-button">Consult a Doctor
     </button>
 </div>
+
+<div class="container">
+    <div class="box"
+        style="background-image: url('https://media.istockphoto.com/id/466859572/photo/getting-her-yearly-check-up.jpg?s=612x612&w=0&k=20&c=Ofxma0M7vFn0oOUMvw8x1qRwIWxO-HgQf6TlSU3RDkE=');">
+        <h2>Pediatrician</h2>
+    </div>
+    <div class="box"
+        style="background-image: url('https://docsmedicalgroup.com/docsurgentcare/wp-content/uploads/sites/2/2023/08/serious-man-consulting-with-young-female-physician-doctor-checkup-meeting-hospital-skilled-general-practitioner-giving-healthcare-medical-advices-patient.jpg');">
+        <h2>General Practitioner</h2>
+    </div>
+    <div class="box"
+        style="background-image: url('https://thumbs.dreamstime.com/b/dermatologist-looking-woman-s-hand-magnifying-glass-32906870.jpg');">
+        <h2>Dermatologist</h2>
+    </div>
+    <div class="box"
+        style="background-image: url('https://thumbs.dreamstime.com/b/young-asian-male-psychiatrist-specialist-psychiatry-caucasain-female-patient-smiling-together-therapy-talking-193932478.jpg');">
+        <h2>Psychiatrist</h2>
+    </div>
+    <div class="box"
+        style="background-image: url('https://st2.depositphotos.com/4817991/11506/i/950/depositphotos_115066342-stock-photo-doctor-nutritionist-with-fruits.jpg');">
+        <h2>Nutritionist</h2>
+    </div>
+    <div class="box"
+        style="background-image: url('https://media.istockphoto.com/id/1501185779/photo/man-doing-physical-therapy-exercises-using-a-stretch-band.jpg?s=612x612&w=0&k=20&c=3SmwAdGd9n7m6AGgHOkqUZU0d-XksLppY1MQzoPh5OA=');">
+        <h2>Physical Therapist</h2>
+    </div>
+</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Best Doctors</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="slider">
+        <button class="nav-button left" onclick="prevSlide()">&#10094;</button>
+
+        <div class="slides">
+            <div class="slide active"
+                style="background-image: url('https://telemedicine.mgmch.org/assets/images/new/2.jpg');">
+                <div class="content">
+
+                </div>
+            </div>
+            <div class="slide"
+                style="background-image: url('https://metrohospitalfaridabad.com/wp-content/uploads/2024/09/female-doctor-with-smart-glasses-touching-virtual-screen-medical-technology.jpg');">
+                <div class="content">
+
+                </div>
+            </div>
+            <div class="slide"
+                style="background-image: url('https://media.gettyimages.com/id/1473559425/photo/female-medical-practitioner-reassuring-a-patient.jpg?s=612x612&w=gi&k=20&c=NZpEPMHBM4SPU8XGfEP4QGi40x2l_x5OZlk233Cgasc=');">
+                <div class="content">
+
+                </div>
+            </div>
+            <div class="slide"
+                style="background-image: url('https://www.herzing.edu/sites/default/files/2022-10/healthcare-professionals.jpg');">
+                <div class="content">
+
+                </div>
+            </div>
+        </div>
+
+        <button class="nav-button right" onclick="nextSlide()">&#10095;</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[index].classList.add('active');
+        document.querySelector('.slides').style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+        showSlide(currentSlide);
+    }
+
+    // Auto-slide every 5 seconds
+    setInterval(nextSlide, 5000);
+
+</script>
