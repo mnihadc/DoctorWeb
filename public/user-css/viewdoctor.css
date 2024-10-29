@@ -1,0 +1,68 @@
+* {
+  box-sizing: border-box;
+}
+
+.doctorpagehead {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background-color: #f3f3f3;
+}
+
+.container {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  padding: 2rem;
+}
+
+.doctor-box {
+  background-color: #ffffff;
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.doctor-box img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.doctor-name {
+  font-size: 1.5rem;
+  margin: 15px 0;
+}
+.doctor {
+  text-align: center;
+  padding-top:2rem ;
+  font-weight: bolder;
+}
+
+.duty-time {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.book-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.book-button:hover {
+  background-color: #0056b3;
+}

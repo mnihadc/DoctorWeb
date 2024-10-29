@@ -16,4 +16,15 @@ const getDoctor = (req, res, next) => {
     isAuthenticated: !!req.session.user,
   });
 };
-module.exports = { getHome, getDoctor };
+const Booking = (req, res, next) => {
+  doctorName = req.params.doctorName;
+  res.render("partials/ViewDoctor", {
+    title: `${doctorName} Profile`,
+    layout: "Layout/main",
+    isViewDoctorPage: true,
+    doctorName,
+    isAdmin: req.session.user?.isAdmin,
+    isAuthenticated: !!req.session.user,
+  });
+};
+module.exports = { getHome, getDoctor, Booking };
