@@ -1,6 +1,6 @@
 <div class="home-background">
-    <button class="ok-button">Consult a Doctor
-    </button>
+    <a href="/doctor"><button class="ok-button">Consult a Doctor
+        </button></a>
 </div>
 
 <div class="container">
@@ -97,8 +97,6 @@
         currentSlide = (currentSlide - 1 + slides.length) % slides.length;
         showSlide(currentSlide);
     }
-
-    // Auto-slide every 5 seconds
-    setInterval(nextSlide, 5000);
+    setInterval(nextSlide, 3000);
 
 </script>

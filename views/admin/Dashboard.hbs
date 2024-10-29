@@ -105,6 +105,7 @@
                 document.querySelector(`#user-${editingUserId} td:nth-child(2)`).textContent = updatedUser.username;
                 document.querySelector(`#user-${editingUserId} td:nth-child(3)`).textContent = updatedUser.email;
                 alert("User updated!");
+                location.reload();
             } else {
                 const errorData = await response.json();
                 alert(`Failed to update user: ${errorData.message || "Unknown error"}`);
