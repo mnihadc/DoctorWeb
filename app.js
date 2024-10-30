@@ -26,7 +26,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.DB_URI,
       collectionName: "sessions",
-      ttl: 14 * 24 * 60 * 60,
+      ttl: 1 * 24 * 60 * 60,
     }),
     cookie: {
       httpOnly: true,
@@ -36,7 +36,6 @@ app.use(
   })
 );
 
-// Connect to MongoDB
 mongoose
   .connect(process.env.DB_URI)
   .then(() => {
@@ -55,12 +54,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "public/user-css")));
 app.use(express.static(path.join(__dirname, "public/admin-css")));
 
-// Use routes
 app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
