@@ -50,5 +50,41 @@ const getAbout = (req, res, next) => {
     isAuthenticated: !!req.session.user,
   });
 };
+const TokenBooking = async (req, res, next) => {
+  try {
+    const { doctorId, appointmentTime } = req.body;
+    const userId = req.session.user._id;
+    const selectedTime = new Date(appointmentTime);
+    const currentTime = new Date();
+    const validBookingTime = new Date(currentTime.getTime() + 30 * 60000);
 
-module.exports = { getHome, getDoctor, getDoctorDetails, getAbout };
+    const timeDifference = Math.abs(
+      selectedTime.getTime() - validBookingTime.getTime()
+    );
+    const oneMinute = 60 * 1000;
+
+    if (timeDifference > oneMinute) {
+      return res
+        .status(400)
+        .send("Appointment time must be exactly 30 minutes from now.");
+    }
+
+    const newBooking = new Booking({
+      doctorId,
+      userId,
+      appointmentTime: selectedTime,
+    });
+
+    await newBooking.save();
+    res.status(201).send("Booking successful");
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = {
+  getHome,
+  getDoctor,
+  getDoctorDetails,
+  getAbout,
+  TokenBooking,
+};
