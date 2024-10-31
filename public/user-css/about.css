@@ -4,13 +4,19 @@ body {
   background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
   color: white;
   padding: 20px;
+  padding-left: 10rem;
+  padding-right: 10rem;
 }
 .container {
   max-width: 800px;
   margin: auto;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.7);
+  background: #004080;
   border-radius: 8px;
+  color: white;
+  padding: 4rem;
+  padding-left: 10rem;
+  padding-right: 10rem;
 }
 h1 {
   text-align: center;
