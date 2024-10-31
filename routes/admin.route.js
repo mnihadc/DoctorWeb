@@ -10,8 +10,9 @@ const { isAdmin } = require("../middleware/isAdmin");
 const route = express.Router();
 
 route.get("/dashboard", verifyToken, isAdmin, dashboard);
-route.put("/update-user/:id", verifyToken,isAdmin, updateUser);
+route.put("/update-user/:id", verifyToken, isAdmin, updateUser);
 route.delete("/delete-user/:id", verifyToken, deleteUser);
 route.post("/create-user", verifyToken, createUser);
+
 
 module.exports = route;

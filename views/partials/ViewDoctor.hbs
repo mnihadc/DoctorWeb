@@ -1,19 +1,19 @@
-<h2 class="doctor">{{doctorName}}</h2>
+<h1>{{title}}</h1>
+
 <div class="doctorpagehead">
     <div class="container">
+        {{#each doctorData}}
         <div class="doctor-box">
-            <img src="https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg"
-                alt="Doctor Image 1">
-            <h2 class="doctor-name">Dr. John Doe</h2>
-            <p class="duty-time">Duty Time: 9:00 AM - 5:00 PM</p>
+            <img src="{{this.image}}" alt="{{this.name}}">
+            <h2 class="doctor-name">{{this.name}}</h2>
+            <p class="duty-time">Duty Time: {{this.dutyTime}}</p>
+            <p class="specialization">Specialization: {{this.specialization}}</p>
+            <p class="bio">{{this.bio}}</p>
+            <p class="contact">
+                Contact: {{this.contact.phone}} | {{this.contact.email}}
+            </p>
             <a href="/booking-token" class="book-button">Book Your Token</a>
         </div>
-        <div class="doctor-box">
-            <img src="https://media.istockphoto.com/id/1346124900/photo/confident-successful-mature-doctor-at-hospital.jpg?s=612x612&w=0&k=20&c=S93n5iTDVG3_kJ9euNNUKVl9pgXTOdVQcI_oDGG-QlE="
-                alt="Doctor Image 2">
-            <h2 class="doctor-name">Dr. Jane Smith</h2>
-            <p class="duty-time">Duty Time: 10:00 AM - 6:00 PM</p>
-            <a href="/booking-token" class="book-button">Book Your Token</a>
-        </div>
+        {{/each}}
     </div>
 </div>
