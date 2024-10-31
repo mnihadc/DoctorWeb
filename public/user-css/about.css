@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+  color: white;
+  padding: 20px;
+}
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+}
+h1 {
+  text-align: center;
+}
+p {
+  line-height: 1.6;
+}
