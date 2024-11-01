@@ -1,5 +1,6 @@
 const Booking = require("../models/Bookings.model");
 const Doctor = require("../models/Doctor.model");
+const User = require("../models/User.model");
 
 const getHome = (req, res, next) => {
   res.render("partials/Home", {
@@ -56,7 +57,7 @@ const TokenBooking = async (req, res, next) => {
     const { doctorId, appointmentTime } = req.body;
     const userId = req.session.user.id;
     const selectedTime = new Date(appointmentTime);
-    const endSelectedTime = new Date(selectedTime.getTime() + 20 * 60000); 
+    const endSelectedTime = new Date(selectedTime.getTime() + 20 * 60000);
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) {
       return res.status(404).send("Doctor not found");
@@ -71,7 +72,7 @@ const TokenBooking = async (req, res, next) => {
 
     const [startHour, startMinuteWithPeriod] = startTime.split(" ");
     const [startHourNum, startMinute] = startHour.split(":");
-    const startPeriod = startMinuteWithPeriod; 
+    const startPeriod = startMinuteWithPeriod;
 
     const [endHour, endMinuteWithPeriod] = endTime.split(" ");
     const [endHourNum, endMinute] = endHour.split(":");
@@ -110,7 +111,42 @@ const TokenBooking = async (req, res, next) => {
     await newBooking.save();
     res.status(201).send("Booking successful");
   } catch (error) {
-    console.error(error); 
+    console.error(error);
+    next(error);
+  }
+};
+const getTokenPage = async (req, res, next) => {
+  try {
+    const userId = req.session.user.id; // Get the user ID from the session
+    // Fetch all bookings for the user
+    const bookings = await Booking.find({ userId }).populate("doctorId");
+
+    // Prepare the booking details
+    const bookingDetails = await Promise.all(
+      bookings.map(async (booking) => {
+        // Fetch the doctor details using the populated doctorId
+        const doctor = booking.doctorId;
+
+        return {
+          doctorName: doctor.name,
+          dutyTime: doctor.dutyTime,
+          appointmentTime: booking.appointmentTime,
+          createdAt: booking.createdAt,
+          userName: req.session.user.name, // Assuming you want to show the user's name
+          userEmail: req.session.user.email, // Assuming you want to show the user's email
+        };
+      })
+    );
+
+    res.render("partials/Token", {
+      title: "Your Token Page",
+      layout: "Layout/main",
+      isTokenPage: true,
+      data: bookingDetails, // Pass the prepared booking details to the view
+      isAdmin: req.session.user?.isAdmin,
+      isAuthenticated: !!req.session.user,
+    });
+  } catch (error) {
     next(error);
   }
 };
@@ -121,4 +157,5 @@ module.exports = {
   getDoctorDetails,
   getAbout,
   TokenBooking,
+  getTokenPage,
 };
