@@ -14,7 +14,7 @@
                 </p>
 
                 <!-- Individual booking form for each doctor -->
-                <form action="/booking" method="POST">
+                <form action="/doctor/booking" method="POST">
                     <input type="hidden" name="doctorId" value="{{this._id}}">
                     <label for="appointmentTime">Select Appointment Time:</label>
                     <input type="datetime-local" name="appointmentTime" required>

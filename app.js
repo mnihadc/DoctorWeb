@@ -6,9 +6,10 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
-const homeRoutes = require("./routes/home.route");
+const homeRoutes = require("./routes/homes.route");
 const authRoutes = require("./routes/auth.route");
 const adminRoutes = require("./routes/admin.route");
+const doctorRoutes = require("./routes/doctor.route");
 
 dotenv.config();
 const app = express();
@@ -57,6 +58,7 @@ app.use(express.static(path.join(__dirname, "public/admin-css")));
 app.use("/", homeRoutes);
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
+app.use("/doctor", doctorRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
