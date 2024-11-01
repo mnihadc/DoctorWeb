@@ -90,7 +90,7 @@ const TokenBooking = async (req, res, next) => {
     });
 
     await newBooking.save();
-    res.status(201).send("Booking successful");
+    res.redirect("/doctor/get-token");
   } catch (error) {
     console.error(error);
     next(error);
