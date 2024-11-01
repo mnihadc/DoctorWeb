@@ -1,19 +1,20 @@
-<h1>{{title}}</h1>
-
-<div class="doctorpagehead">
-    <div class="container">
-        {{#each doctorData}}
-        <div class="doctor-box">
-            <img src="{{this.image}}" alt="{{this.name}}">
-            <h2 class="doctor-name">{{this.name}}</h2>
-            <p class="duty-time">Duty Time: {{this.dutyTime}}</p>
-            <p class="specialization">Specialization: {{this.specialization}}</p>
-            <p class="bio">{{this.bio}}</p>
-            <p class="contact">
-                Contact: {{this.contact.phone}} | {{this.contact.email}}
-            </p>
-            <a href="/booking-token" class="book-button">Book Your Token</a>
+<div class="headofdoctor">
+    <h1>{{this.title}}</h1>
+    <div class="doctorpagehead">
+        <div class="container">
+            {{#each doctorData}}
+            <div class="doctor-box">
+                <img src="{{this.image}}" alt="{{this.name}}">
+                <h2 class="doctor-name">{{this.name}}</h2>
+                <p class="duty-time">Duty Time: {{this.dutyTime}}</p>
+                <p class="specialization">Specialization: {{this.specialization}}</p>
+                <p class="bio">{{this.bio}}</p>
+                <p class="contact">
+                    Contact: {{this.contact.phone}} | {{this.contact.email}}
+                </p>
+                <a href="/booking-token" class="book-button">Book Your Token</a>
+            </div>
+            {{/each}}
         </div>
-        {{/each}}
     </div>
 </div>

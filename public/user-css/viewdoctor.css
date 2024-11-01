@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: center;
   min-height: 90vh;
-  background-color: #f3f3f3;
+  background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
 }
 
 .container {
@@ -19,6 +19,7 @@
   max-width: 1200px;
   width: 100%;
   padding: 1rem;
+  background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
 }
 
 .doctor-box {
@@ -40,11 +41,6 @@
 .doctor-name {
   font-size: 1.5rem;
   margin: 15px 0;
-}
-.doctor {
-  text-align: center;
-  padding-top: 2rem;
-  font-weight: bolder;
 }
 
 .duty-time {
@@ -69,4 +65,11 @@
 h1 {
   text-align: center;
   padding-top: 3px;
+  color: whitesmoke;
+  text-transform: uppercase;
+  background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
+}
+
+.headofdoctor {
+  background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
 }
