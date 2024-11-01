@@ -1,3 +1,4 @@
+const Booking = require("../models/Bookings.model");
 const Doctor = require("../models/Doctor.model");
 
 const getHome = (req, res, next) => {
@@ -53,20 +54,51 @@ const getAbout = (req, res, next) => {
 const TokenBooking = async (req, res, next) => {
   try {
     const { doctorId, appointmentTime } = req.body;
-    const userId = req.session.user._id;
+    const userId = req.session.user.id;
     const selectedTime = new Date(appointmentTime);
-    const currentTime = new Date();
-    const validBookingTime = new Date(currentTime.getTime() + 30 * 60000);
+    const endSelectedTime = new Date(selectedTime.getTime() + 20 * 60000); 
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).send("Doctor not found");
+    }
+    if (!doctor.dutyTime || typeof doctor.dutyTime !== "string") {
+      return res.status(400).send("Doctor's duty hours are not properly set.");
+    }
+    const [startTime, endTime] = doctor.dutyTime.split(" - ");
+    if (!startTime || !endTime) {
+      return res.status(400).send("Duty time format is incorrect.");
+    }
 
-    const timeDifference = Math.abs(
-      selectedTime.getTime() - validBookingTime.getTime()
+    const [startHour, startMinuteWithPeriod] = startTime.split(" ");
+    const [startHourNum, startMinute] = startHour.split(":");
+    const startPeriod = startMinuteWithPeriod; 
+
+    const [endHour, endMinuteWithPeriod] = endTime.split(" ");
+    const [endHourNum, endMinute] = endHour.split(":");
+    const endPeriod = endMinuteWithPeriod;
+
+    const dutyStart = new Date();
+    const dutyEnd = new Date();
+
+    dutyStart.setHours(
+      startPeriod === "PM"
+        ? parseInt(startHourNum) + 12
+        : parseInt(startHourNum),
+      parseInt(startMinute),
+      0,
+      0
     );
-    const oneMinute = 60 * 1000;
 
-    if (timeDifference > oneMinute) {
+    dutyEnd.setHours(
+      endPeriod === "PM" ? parseInt(endHourNum) + 12 : parseInt(endHourNum),
+      parseInt(endMinute),
+      0,
+      0
+    );
+    if (selectedTime < dutyStart || endSelectedTime > dutyEnd) {
       return res
         .status(400)
-        .send("Appointment time must be exactly 30 minutes from now.");
+        .send("Appointment time must be within doctor's duty hours.");
     }
 
     const newBooking = new Booking({
@@ -78,9 +110,11 @@ const TokenBooking = async (req, res, next) => {
     await newBooking.save();
     res.status(201).send("Booking successful");
   } catch (error) {
+    console.error(error); 
     next(error);
   }
 };
+
 module.exports = {
   getHome,
   getDoctor,
