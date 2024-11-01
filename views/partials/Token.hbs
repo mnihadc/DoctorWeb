@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Booked Tokens</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Your Booked Tokens</h1>
+
+        {{#if bookings.length}}
+        <table>
+            <thead>
+                <tr>
+                    <th>Doctor Name</th>
+                    <th>Duty Time</th>
+                    <th>Booked Time</th>
+                    <th>Username</th>
+                    <th>Created Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each bookings}}
+                <tr>
+                    <td>{{this.doctorName}}</td>
+                    <td>{{this.dutyTime}}</td>
+                    <td>{{formatDate this.appointmentTime}}</td>
+                    <td>{{this.userName}}</td>
+                    <td>{{formatDate this.createdAt}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <p>You have no booked tokens.</p>
+        {{/if}}
+    </div>
+</body>
+
+</html>
