@@ -1,25 +1,21 @@
-<h1>Your Booked Tokens</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Doctor Name</th>
-            <th>Duty Time</th>
-            <th>Appointment Time</th>
-            <th>Created At</th>
-            <th>User Name</th>
-            <th>User Email</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="headofpage">
+    <h1>Your Booked Tokens</h1>
+    <div class="card-container">
         {{#each data}}
-        <tr>
-            <td>{{this.doctorName}}</td>
-            <td>{{this.dutyTime}}</td>
-            <td>{{this.appointmentTime}}</td>
-            <td>{{this.createdAt}}</td>
-            <td>{{this.userName}}</td>
-            <td>{{this.userEmail}}</td>
-        </tr>
+        <div class="card">
+            <div class="card-header">
+                <h2>{{this.doctorName}}</h2>
+                <p class="duty-time">{{this.dutyTime}}</p>
+            </div>
+            <div class="card-body">
+                <p><strong>Appointment Time:</strong> {{this.appointmentTime}}</p>
+                <p><strong>Created At:</strong> {{this.createdAt}}</p>
+            </div>
+            <div class="card-footer">
+                <p><strong>User Name:</strong> {{this.userName}}</p>
+                <p><strong>User Email:</strong> {{this.userEmail}}</p>
+            </div>
+        </div>
         {{/each}}
-    </tbody>
-</table>
+    </div>
+</div>

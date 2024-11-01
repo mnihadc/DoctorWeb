@@ -132,7 +132,7 @@ const getTokenPage = async (req, res, next) => {
           dutyTime: doctor.dutyTime,
           appointmentTime: booking.appointmentTime,
           createdAt: booking.createdAt,
-          userName: req.session.user.name, // Assuming you want to show the user's name
+          userName: req.session.user.username, // Assuming you want to show the user's name
           userEmail: req.session.user.email, // Assuming you want to show the user's email
         };
       })
@@ -142,7 +142,7 @@ const getTokenPage = async (req, res, next) => {
       title: "Your Token Page",
       layout: "Layout/main",
       isTokenPage: true,
-      data: bookingDetails, // Pass the prepared booking details to the view
+      data: bookingDetails,
       isAdmin: req.session.user?.isAdmin,
       isAuthenticated: !!req.session.user,
     });
