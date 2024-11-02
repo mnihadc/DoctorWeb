@@ -1,0 +1,24 @@
+<div class="headofpage">
+    <div class="headsessions">
+        <h1>Your Booking History</h1>
+        <a href="/doctor/get-token"><button>Current Tokens</button></a>
+    </div>
+    <div class="card-container">
+        {{#each historyData}}
+        <div class="card">
+            <div class="card-header">
+                <h2>{{this.doctorName}}</h2>
+                <p class="duty-time">{{this.dutyTime}}</p>
+            </div>
+            <div class="card-body">
+                <p><strong>Appointment Time:</strong> {{this.appointmentTime}}</p>
+                <p><strong>Booked On:</strong> {{this.createdAt}}</p>
+            </div>
+            <div class="card-footer">
+                <p><strong>User Name:</strong> {{this.userName}}</p>
+                <p><strong>User Email:</strong> {{this.userEmail}}</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
