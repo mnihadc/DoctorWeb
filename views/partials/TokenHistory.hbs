@@ -4,8 +4,10 @@
         <a href="/doctor/get-token"><button>Current Tokens</button></a>
     </div>
     <div class="card-container">
-        {{#each historyData}}
+        {{#each data}}
         <div class="card">
+            <!-- Expired Badge -->
+            <div class="expired-badge">Expired</div>
             <div class="card-header">
                 <h2>{{this.doctorName}}</h2>
                 <p class="duty-time">{{this.dutyTime}}</p>

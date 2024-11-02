@@ -105,11 +105,14 @@ const TokenBooking = async (req, res, next) => {
     next(error);
   }
 };
-
 const getTokenPage = async (req, res, next) => {
   try {
     const userId = req.session.user.id;
-    const bookings = await Booking.find({ userId }).populate("doctorId");
+    const now = new Date();
+    const bookings = await Booking.find({
+      userId,
+      appointmentTime: { $gte: now },
+    }).populate("doctorId");
 
     const bookingDetails = await Promise.all(
       bookings.map(async (booking) => {
@@ -139,9 +142,47 @@ const getTokenPage = async (req, res, next) => {
   }
 };
 
+const getHistoryToken = async (req, res, next) => {
+  try {
+    const userId = req.session.user.id;
+    const now = new Date();
+    const bookings = await Booking.find({
+      userId,
+      appointmentTime: { $lt: now },
+    }).populate("doctorId");
+
+    const bookingDetails = await Promise.all(
+      bookings.map(async (booking) => {
+        const doctor = booking.doctorId;
+
+        return {
+          doctorName: doctor.name,
+          dutyTime: doctor.dutyTime,
+          appointmentTime: booking.appointmentTime,
+          createdAt: booking.createdAt,
+          userName: req.session.user.username,
+          userEmail: req.session.user.email,
+        };
+      })
+    );
+
+    res.render("partials/TokenHistory", {
+      title: "Your Token History Page",
+      layout: "Layout/main",
+      isTokenHistoryPage: true,
+      data: bookingDetails,
+      isAdmin: req.session.user?.isAdmin,
+      isAuthenticated: !!req.session.user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getDoctor,
   getDoctorDetails,
   TokenBooking,
   getTokenPage,
+  getHistoryToken,
 };

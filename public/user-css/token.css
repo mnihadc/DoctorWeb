@@ -2,31 +2,48 @@
   padding: 1rem;
   background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
 }
+
 .headsessions {
   display: flex;
   justify-content: center;
 }
+
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around; /* Center the cards */
+  justify-content: space-around;
   margin: 20px;
 }
 
 .card {
-  background-color: #ffffff; /* White background */
-  border: 1px solid #dddddd; /* Light border */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  position: relative; /* For positioning badge */
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 15px;
   padding: 20px;
-  width: 300px; /* Fixed width for the cards */
-  transition: transform 0.2s; /* Smooth transition for hover effect */
+  width: 300px;
+  transition: transform 0.2s;
 }
 
 .card:hover {
-  transform: scale(1.05); /* Scale up card on hover */
+  transform: scale(1.05);
 }
+
+.expired-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4f; /* Red for expired badge */
+  color: #ffffff;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
 h1 {
   text-align: center;
   color: #dddddd;
@@ -34,13 +51,13 @@ h1 {
 }
 
 .card-header {
-  border-bottom: 1px solid #dddddd; /* Bottom border for the header */
+  border-bottom: 1px solid #dddddd;
   padding-bottom: 10px;
 }
 
 .card-header h2 {
-  margin: 0; /* Remove default margin */
-  font-size: 20px; /* Title font size */
+  margin: 0;
+  font-size: 20px;
 }
 
 .card-body {
@@ -49,6 +66,6 @@ h1 {
 
 .card-footer {
   margin-top: 15px;
-  font-size: 14px; /* Smaller font size for footer */
-  color: #666; /* Grey color for footer text */
+  font-size: 14px;
+  color: #666;
 }
