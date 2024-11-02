@@ -4,6 +4,9 @@
         <a href="/doctor/get-token"><button>Current Tokens</button></a>
     </div>
     <div class="card-container">
+        {{#if isEmpty}}
+        <p class="noToken">No past tokens found.</p>
+        {{else}}
         {{#each data}}
         <div class="card">
             <!-- Expired Badge -->
@@ -22,5 +25,6 @@
             </div>
         </div>
         {{/each}}
+        {{/if}}
     </div>
 </div>

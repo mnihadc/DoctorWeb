@@ -1,9 +1,12 @@
 <div class="headofpage">
     <div class="headsessions">
         <h1>Your Booked Tokens</h1>
-        <a href="/doctor/get-history-token"><button>history-tokens</button></a>
+        <a href="/doctor/get-history-token"><button>History Tokens</button></a>
     </div>
     <div class="card-container">
+        {{#if isEmpty}}
+        <p class="noToken">No upcoming tokens booked.</p>
+        {{else}}
         {{#each data}}
         <div class="card">
             <div class="card-header">
@@ -20,5 +23,6 @@
             </div>
         </div>
         {{/each}}
+        {{/if}}
     </div>
 </div>

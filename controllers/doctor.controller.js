@@ -117,7 +117,6 @@ const getTokenPage = async (req, res, next) => {
     const bookingDetails = await Promise.all(
       bookings.map(async (booking) => {
         const doctor = booking.doctorId;
-
         return {
           doctorName: doctor.name,
           dutyTime: doctor.dutyTime,
@@ -136,6 +135,7 @@ const getTokenPage = async (req, res, next) => {
       data: bookingDetails,
       isAdmin: req.session.user?.isAdmin,
       isAuthenticated: !!req.session.user,
+      isEmpty: bookingDetails.length === 0,
     });
   } catch (error) {
     next(error);
@@ -154,7 +154,6 @@ const getHistoryToken = async (req, res, next) => {
     const bookingDetails = await Promise.all(
       bookings.map(async (booking) => {
         const doctor = booking.doctorId;
-
         return {
           doctorName: doctor.name,
           dutyTime: doctor.dutyTime,
@@ -173,6 +172,7 @@ const getHistoryToken = async (req, res, next) => {
       data: bookingDetails,
       isAdmin: req.session.user?.isAdmin,
       isAuthenticated: !!req.session.user,
+      isEmpty: bookingDetails.length === 0,
     });
   } catch (error) {
     next(error);
