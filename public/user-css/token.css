@@ -2,6 +2,10 @@
   padding: 1rem;
   background: -webkit-linear-gradient(left, #003366, #004080, #0059b3, #0073e6);
 }
+.headsessions {
+  display: flex;
+  justify-content: center;
+}
 .card-container {
   display: flex;
   flex-wrap: wrap;
