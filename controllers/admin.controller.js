@@ -3,15 +3,19 @@ const bcrypt = require("bcryptjs");
 
 const dashboard = async (req, res, next) => {
   const users = await User.find({});
+  const waitingUsers = await User.find({ isWaitingForCall: true });
+
   res.render("admin/Dashboard", {
     title: "User Management",
     layout: "Layout/main",
     isDashboardPage: true,
     users,
+    waitingUsers,
     isAdmin: req.session.user?.isAdmin,
     isAuthenticated: !!req.session.user,
   });
 };
+
 const updateUser = async (req, res) => {
   const id = req.params.id;
   const { username, email } = req.body;

@@ -11,7 +11,7 @@
         <div class="card">
             <div class="card-header">
                 <h2>{{this.doctorName}}</h2>
-                <p class="duty-time">{{this.dutyTime}}</p>
+                <p class="duty-time">{{this.specialization}}</p>
             </div>
             <div class="card-body">
                 <p><strong>Appointment Time:</strong> {{this.appointmentTime}}</p>
@@ -20,6 +20,12 @@
             <div class="card-footer">
                 <p><strong>User Name:</strong> {{this.userName}}</p>
                 <p><strong>User Email:</strong> {{this.userEmail}}</p>
+                {{#if this.isJoinable}}
+                <a href="/doctor/video-call?userId={{this.userId}}&appointmentId={{this._id}}">
+                    <button>Join Video Call</button>
+                </a>
+                {{/if}}
+
             </div>
         </div>
         {{/each}}

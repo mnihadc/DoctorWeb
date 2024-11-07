@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <style>
+        body {
+            background-color: blue;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #videoContainer {
+            border: 2px solid white;
+            padding: 10px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            border: 1px solid white;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="videoContainer">
+        <h2>Welcome, {{userName}} ({{userEmail}})</h2>
+        <h3>Doctor: {{doctorName}} ({{specialization}})</h3>
+        <video id="localVideo" autoplay playsinline muted></video>
+        <video id="remoteVideo" autoplay playsinline></video>
+        <p>Note: Video call functionality is in testing mode. Camera access is enabled.</p>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/video-call.js"></script>
+</body>
+
+</html>

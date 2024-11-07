@@ -1,32 +1,45 @@
-<div class="container">
-    <div class="search-container">
-        <input type="text" placeholder="Search users..." oninput="filterUsers()" id="searchInput">
-        <button onclick="Popup()" style="color: aliceblue;">Create User</button>
+<div class="dashboard">
+    <div class="container">
+        <div class="search-container">
+            <input type="text" placeholder="Search users..." oninput="filterUsers()" id="searchInput">
+            <button onclick="togglePopup()" style="color: aliceblue;">Create User</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                {{#each users}}
+                <tr id="user-{{this._id}}" data-username="{{this.username}}" data-email="{{this.email}}">
+                    <td>{{this._id}}</td>
+                    <td>{{this.username}}</td>
+                    <td>{{this.email}}</td>
+                    <td><button onclick="openEditPopup('{{this._id}}', '{{this.username}}', '{{this.email}}')">Edit</button></td>
+                    <td><button onclick="deleteUser('{{this._id}}')">Delete</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody id="userTableBody">
-            {{#each users}}
-            <tr id="user-{{this._id}}" data-username="{{this.username}}" data-email="{{this.email}}">
-                <td>{{this._id}}</td>
-                <td>{{this.username}}</td>
-                <td>{{this.email}}</td>
-                <td><button onclick="openEditPopup('{{this._id}}', '{{this.username}}', '{{this.email}}')">Edit</button>
-                </td>
-                <td><button onclick="deleteUser('{{this._id}}')">Delete</button></td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+    <div class="sidebar">
+        <h2>Waiting for Call</h2>
+        {{#each waitingUsers}}
+        <div class="user-entry">
+            <p>{{this.username}}</p>
+            <button onclick="connectUser('{{this._id}}')">Connect</button>
+        </div>
+        {{else}}
+        <p>No users waiting for a call</p>
+        {{/each}}
+    </div>
 </div>
 
 <div id="overlay" class="overlay"></div>
@@ -37,7 +50,7 @@
     <input type="email" id="emailInput" placeholder="Email">
     <input type="password" id="passwordInput" placeholder="Password">
     <button onclick="addOrUpdateUser()">Save</button>
-    <button onclick="Popup()">Cancel</button>
+    <button onclick="togglePopup()">Cancel</button>
 </div>
 
 <script>
@@ -52,7 +65,7 @@
         });
     }
 
-    function Popup() {
+    function togglePopup() {
         const popup = document.getElementById("popup");
         const overlay = document.getElementById("overlay");
         popup.style.display = popup.style.display === "block" ? "none" : "block";
@@ -74,15 +87,14 @@
         document.getElementById("passwordInput").style.display = "none";
         document.getElementById("popupTitle").textContent = "Update User";
         editingUserId = id;
-        Popup();
+        togglePopup();
     }
-
 
     async function addOrUpdateUser() {
         const userData = {
             username: document.getElementById("usernameInput").value,
             email: document.getElementById("emailInput").value,
-            password: document.getElementById("passwordInput").style.display = 'none'
+            password: document.getElementById("passwordInput").value,
         };
 
         const url = editingUserId ? `/admin/update-user/${editingUserId}` : `/admin/create-user`;
@@ -100,7 +112,7 @@
             const error = await response.json();
             alert(`Error: ${error.message || "Unknown error"}`);
         }
-        Popup();
+        togglePopup();
     }
 
     async function deleteUser(id) {
@@ -109,5 +121,10 @@
             document.getElementById(`user-${id}`).remove();
             alert("User deleted!");
         }
+    }
+
+    function connectUser(userId) {
+        // Redirect admin to the specific user's video call page
+        window.location.href = `/doctor/video-call/${userId}`;
     }
 </script>

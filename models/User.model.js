@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 8,
   },
+  isWaitingForCall: {
+    type: Boolean,
+    default: false, // By default, users are not waiting for a call
+  },
 });
 
 const User = mongoose.model("User", userSchema);
