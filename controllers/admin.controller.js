@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const dashboard = async (req, res, next) => {
   const users = await User.find({});
   const waitingUsers = await User.find({ isWaitingForCall: true });
+  console.log(waitingUsers);
 
   res.render("admin/Dashboard", {
     title: "User Management",
@@ -58,5 +59,25 @@ const createUser = async (req, res, next) => {
     next(error);
   }
 };
+const getWaitingUsers = async (req, res, next) => {
+  try {
+    const waitingUsers = await User.find({ isWaitingForCall: true });
 
-module.exports = { dashboard, updateUser, deleteUser, createUser };
+    res.render("AdminDashboard", {
+      title: "Admin Dashboard",
+      layout: "Layout/admin",
+      waitingUsers,
+    });
+  } catch (error) {
+    console.error("Error fetching waiting users:", error);
+    next(error);
+  }
+};
+
+module.exports = {
+  dashboard,
+  updateUser,
+  deleteUser,
+  createUser,
+  getWaitingUsers,
+};

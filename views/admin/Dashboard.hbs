@@ -21,7 +21,9 @@
                     <td>{{this._id}}</td>
                     <td>{{this.username}}</td>
                     <td>{{this.email}}</td>
-                    <td><button onclick="openEditPopup('{{this._id}}', '{{this.username}}', '{{this.email}}')">Edit</button></td>
+                    <td><button
+                            onclick="openEditPopup('{{this._id}}', '{{this.username}}', '{{this.email}}')">Edit</button>
+                    </td>
                     <td><button onclick="deleteUser('{{this._id}}')">Delete</button></td>
                 </tr>
                 {{/each}}
@@ -39,6 +41,7 @@
         {{else}}
         <p>No users waiting for a call</p>
         {{/each}}
+
     </div>
 </div>
 
@@ -124,7 +127,7 @@
     }
 
     function connectUser(userId) {
-        // Redirect admin to the specific user's video call page
-        window.location.href = `/doctor/video-call/${userId}`;
+        // Redirect admin to the user's video call page
+        window.location.href = `/doctor/video-call?userId=${userId}`;
     }
 </script>

@@ -220,43 +220,33 @@ const getHistoryToken = async (req, res, next) => {
 const videoCall = async (req, res, next) => {
   try {
     const admin = req.session.user.isAdmin;
-    const { userId, appointmentId } = req.query;
+    const { userId } = req.query; // Only userId is needed for the call.
 
-    // Log the userId and appointmentId for debugging
-    console.log("Received userId:", userId);
-    console.log("Received appointmentId:", appointmentId);
-
-    // Check if userId and appointmentId are valid
+    // Validate the user ID
     if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).send("Invalid user ID");
     }
-    if (!appointmentId || !mongoose.Types.ObjectId.isValid(appointmentId)) {
-      return res.status(400).send("Invalid appointment ID");
-    }
 
+    // Fetch the user who is waiting for the call
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).send("User not found");
     }
 
-    // Set isWaitingForCall to true for the user when the admin connects
+    // Set the user as 'waiting for the call'
     await User.findByIdAndUpdate(userId, { isWaitingForCall: true });
 
-    // Fetch appointment details
-    const appointment = await Booking.findById(appointmentId);
-    if (!appointment) {
-      return res.status(404).send("Appointment not found");
-    }
+    // Now you may not need the appointment, but you might want to show doctor info
+    const doctorName = admin ? "Admin" : "Doctor"; // Simplify if it's the admin or a real doctor
+    const specialization = admin ? "Admin" : "General Medicine"; // Just an example for specialization
 
-    // Render video call page
     res.render("partials/videoCall", {
       title: "Video Call",
       layout: "Layout/main",
       userName: user.username,
       userEmail: user.email,
-      doctorName: admin ? "Admin" : appointment.doctorId.name,
-      specialization: admin ? "Admin" : appointment.doctorId.specialization,
-      appointmentTime: appointment.appointmentTime, // Show appointment time
+      doctorName: doctorName,
+      specialization: specialization,
       isAdmin: req.session.user?.isAdmin,
       isAuthenticated: !!req.session.user,
     });
