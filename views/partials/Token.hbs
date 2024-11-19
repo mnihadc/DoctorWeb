@@ -21,7 +21,7 @@
                 <p><strong>User Name:</strong> {{this.userName}}</p>
                 <p><strong>User Email:</strong> {{this.userEmail}}</p>
                 {{#if this.isJoinable}}
-                <a href="/doctor/video-call?userId={{this.userId._id}}&appointmentId={{this._id}}">
+                <a href="/doctor/video-call?userId={{this.userId}}&appointmentId={{this._id}}">
                     <button>Join Video Call</button>
                 </a>
                 {{/if}}

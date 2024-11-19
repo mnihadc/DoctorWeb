@@ -143,6 +143,7 @@ const getTokenPage = async (req, res, next) => {
     res.render("partials/Token", {
       title: "Your Token Page",
       layout: "Layout/main",
+      userId: userId,
       isTokenPage: true,
       data: bookingDetails,
       isAdmin: req.user?.isAdmin,
