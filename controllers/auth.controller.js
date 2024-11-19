@@ -101,7 +101,7 @@ const Login = async (req, res, next) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: 3600000,
+      maxAge: 3600000, // 1 hour
     });
 
     if (email === adminEmail) {
@@ -119,7 +119,6 @@ const Login = async (req, res, next) => {
     next(error);
   }
 };
-
 const Logout = (req, res, next) => {
   req.session.destroy((err) => {
     if (err) return next(err);
