@@ -22,9 +22,17 @@ const bookingSchema = new mongoose.Schema(
         message: "Appointment time must be in the future.",
       },
     },
+    status: {
+      type: String,
+      enum: ["pending", "confirmed", "cancelled", "completed"],
+      default: "pending",
+    },
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );
+
+// Adding a unique index to prevent overlapping appointments
+bookingSchema.index({ doctorId: 1, appointmentTime: 1 }, { unique: true });
 
 const Booking = mongoose.model("Booking", bookingSchema);
 

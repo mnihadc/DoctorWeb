@@ -2,19 +2,23 @@ const User = require("../models/User.model");
 const bcrypt = require("bcryptjs");
 
 const dashboard = async (req, res, next) => {
-  const users = await User.find({});
-  const waitingUsers = await User.find({ isWaitingForCall: true });
-  console.log(waitingUsers);
+  try {
+    const users = await User.find({});
+    const waitingUsers = await User.find({ isWaitingForCall: true });
+    console.log(waitingUsers);
 
-  res.render("admin/Dashboard", {
-    title: "User Management",
-    layout: "Layout/main",
-    isDashboardPage: true,
-    users,
-    waitingUsers,
-    isAdmin: req.session.user?.isAdmin,
-    isAuthenticated: !!req.session.user,
-  });
+    res.render("admin/Dashboard", {
+      title: "User Management",
+      layout: "Layout/main",
+      isDashboardPage: true,
+      users,
+      waitingUsers,
+      isAdmin: req.user?.isAdmin, // Use req.user from token to check if admin
+      isAuthenticated: !!req.user, // Check if user exists in token
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const updateUser = async (req, res) => {
@@ -38,7 +42,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
   const id = req.params.id;
   try {
     await User.findByIdAndDelete(id);

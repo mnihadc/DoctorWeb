@@ -10,7 +10,7 @@ const {
 } = require("../controllers/doctor.controller");
 const router = express.Router();
 
-router.get("/doctor", getDoctor);
+router.get("/doctor", verifyToken, getDoctor);
 router.get("/getdoctor/:doctorName", verifyToken, getDoctorDetails);
 router.post("/booking", verifyToken, TokenBooking);
 router.get("/get-token", verifyToken, getTokenPage);

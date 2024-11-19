@@ -85,31 +85,27 @@ const Login = async (req, res, next) => {
       });
     }
 
-    req.session.user = {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      isAdmin: email === adminEmail,
-    };
-
+    // Generate JWT token
     const token = jwt.sign(
       { id: user._id, email: user.email, isAdmin: email === adminEmail },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1h" }
     );
 
+    // Set the token as a cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production", // Only set cookie in HTTPS environment
       maxAge: 3600000, // 1 hour
     });
 
+    // Redirect to home or specific page based on admin status
     if (email === adminEmail) {
       return res.render("partials/Home", {
         title: "Home",
         layout: "Layout/main",
         isHomePage: true,
-        isAuthenticated: !!req.session.user,
+        isAuthenticated: true,
         isAdmin: true,
       });
     } else {
@@ -119,13 +115,13 @@ const Login = async (req, res, next) => {
     next(error);
   }
 };
+
 const Logout = (req, res, next) => {
-  req.session.destroy((err) => {
-    if (err) return next(err);
-    res.clearCookie("connect.sid");
-    res.clearCookie("token");
-    res.redirect("/auth/login");
-  });
+  // Clear the token cookie
+  res.clearCookie("token");
+
+  // Redirect to login page
+  res.redirect("/auth/login");
 };
 
 module.exports = { getLogin, Signup, Login, Logout };

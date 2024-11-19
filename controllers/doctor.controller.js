@@ -43,12 +43,13 @@ cron.schedule("* * * * *", checkAppointments);
 
 // Controller methods
 const getDoctor = (req, res) => {
+  const user = req.user; // Get user from the token
   res.render("partials/Doctor", {
     title: "Doctor",
     layout: "Layout/main",
     isDoctorPage: true,
-    isAdmin: req.session.user?.isAdmin,
-    isAuthenticated: !!req.session.user,
+    isAdmin: user?.isAdmin, // Check if user is admin
+    isAuthenticated: !!user, // Check if the user exists
   });
 };
 
@@ -63,13 +64,14 @@ const getDoctorDetails = async (req, res, next) => {
       return res.status(404).send("No doctors found with that specialization");
     }
 
+    const user = req.user; // Get user from the token
     res.render("partials/ViewDoctor", {
       title: `${doctorName} Profile`,
       layout: "Layout/main",
       isViewDoctorPage: true,
       doctorData,
-      isAdmin: req.session.user?.isAdmin,
-      isAuthenticated: !!req.session.user,
+      isAdmin: user?.isAdmin,
+      isAuthenticated: !!user,
     });
   } catch (error) {
     next(error);
@@ -79,58 +81,25 @@ const getDoctorDetails = async (req, res, next) => {
 const TokenBooking = async (req, res, next) => {
   try {
     const { doctorId, appointmentTime } = req.body;
-    const userId = req.session.user.id;
+    const userId = req.user.id; // Accessing userId from the JWT token
+
+    if (!userId) {
+      return res.status(400).send("User ID is required.");
+    }
+
     const selectedTime = new Date(appointmentTime);
     const endSelectedTime = new Date(selectedTime.getTime() + 20 * 60000); // +20 minutes
 
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) return res.status(404).send("Doctor not found");
 
-    if (!doctor.dutyTime || typeof doctor.dutyTime !== "string") {
-      return res.status(400).send("Doctor's duty hours are not properly set.");
-    }
-
-    // Parse doctor's duty time
-    const [startTime, endTime] = doctor.dutyTime.split(" - ");
-    const [startHourMinute, startPeriod] = startTime.split(" ");
-    const [endHourMinute, endPeriod] = endTime.split(" ");
-    const [startHour, startMinute] = startHourMinute.split(":");
-    const [endHour, endMinute] = endHourMinute.split(":");
-
-    const currentDate = new Date();
-    const dutyStart = new Date(currentDate);
-    const dutyEnd = new Date(currentDate);
-
-    dutyStart.setHours(
-      startPeriod === "PM" && parseInt(startHour) !== 12
-        ? parseInt(startHour) + 12
-        : parseInt(startHour),
-      parseInt(startMinute),
-      0,
-      0
-    );
-    dutyEnd.setHours(
-      endPeriod === "PM" && parseInt(endHour) !== 12
-        ? parseInt(endHour) + 12
-        : parseInt(endHour),
-      parseInt(endMinute),
-      0,
-      0
-    );
-
-    // Check if the selected time is within the doctor's duty hours
-    if (selectedTime < dutyStart || endSelectedTime > dutyEnd) {
-      return res
-        .status(400)
-        .send("Appointment time must be within today's duty hours.");
-    }
-
-    // Create the booking
+    // Create new booking
     const newBooking = new Booking({
       doctorId,
       userId,
       appointmentTime: selectedTime,
     });
+
     await newBooking.save();
     res.redirect("/doctor/get-token");
   } catch (error) {
@@ -141,7 +110,7 @@ const TokenBooking = async (req, res, next) => {
 
 const getTokenPage = async (req, res, next) => {
   try {
-    const userId = req.session.user.id;
+    const userId = req.user.id; // Get user ID from the token
     const now = new Date();
     const bookings = await Booking.find({
       userId,
@@ -162,8 +131,8 @@ const getTokenPage = async (req, res, next) => {
           specialization: doctor.specialization,
           appointmentTime: booking.appointmentTime,
           createdAt: booking.createdAt,
-          userName: req.session.user.username,
-          userEmail: req.session.user.email,
+          userName: req.user.username,
+          userEmail: req.user.email,
           _id: booking._id,
           doctorId: booking.doctorId,
           isJoinable,
@@ -176,8 +145,8 @@ const getTokenPage = async (req, res, next) => {
       layout: "Layout/main",
       isTokenPage: true,
       data: bookingDetails,
-      isAdmin: req.session.user?.isAdmin,
-      isAuthenticated: !!req.session.user,
+      isAdmin: req.user?.isAdmin,
+      isAuthenticated: !!req.user,
       isEmpty: bookingDetails.length === 0,
     });
   } catch (error) {
@@ -219,7 +188,7 @@ const getHistoryToken = async (req, res, next) => {
 
 const videoCall = async (req, res, next) => {
   try {
-    const admin = req.session.user.isAdmin;
+    const user = req.user; // Get user from the token
     const { userId } = req.query; // Only userId is needed for the call.
 
     // Validate the user ID
@@ -228,8 +197,8 @@ const videoCall = async (req, res, next) => {
     }
 
     // Fetch the user who is waiting for the call
-    const user = await User.findById(userId);
-    if (!user) {
+    const callUser = await User.findById(userId);
+    if (!callUser) {
       return res.status(404).send("User not found");
     }
 
@@ -237,18 +206,18 @@ const videoCall = async (req, res, next) => {
     await User.findByIdAndUpdate(userId, { isWaitingForCall: true });
 
     // Now you may not need the appointment, but you might want to show doctor info
-    const doctorName = admin ? "Admin" : "Doctor"; // Simplify if it's the admin or a real doctor
-    const specialization = admin ? "Admin" : "General Medicine"; // Just an example for specialization
+    const doctorName = user?.isAdmin ? "Admin" : "Doctor"; // Simplify if it's the admin or a real doctor
+    const specialization = user?.isAdmin ? "Admin" : "General Medicine"; // Just an example for specialization
 
     res.render("partials/videoCall", {
       title: "Video Call",
       layout: "Layout/main",
-      userName: user.username,
-      userEmail: user.email,
+      userName: callUser.username,
+      userEmail: callUser.email,
       doctorName: doctorName,
       specialization: specialization,
-      isAdmin: req.session.user?.isAdmin,
-      isAuthenticated: !!req.session.user,
+      isAdmin: user?.isAdmin,
+      isAuthenticated: !!user,
     });
   } catch (error) {
     console.error("Error in video call:", error);
