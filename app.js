@@ -36,13 +36,13 @@ app.use(
       ttl: 1 * 24 * 60 * 60, // 1 day
     }),
     cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set to true only in production
+      httpOnly: true, // Ensure the cookie is only accessible by the server
+      secure: process.env.NODE_ENV === "production", // Only secure cookies in production (https)
       maxAge: 3600000, // 1 hour
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // In production, allow cross-origin cookies
     },
   })
 );
-
 // MongoDB connection
 mongoose
   .connect(process.env.DB_URI)
