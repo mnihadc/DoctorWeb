@@ -1,4 +1,5 @@
 const getHome = (req, res, next) => {
+  console.log("Session User:", req.session.user);  
   res.render("partials/Home", {
     title: "Home",
     layout: "Layout/main",
